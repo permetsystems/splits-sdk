@@ -425,20 +425,26 @@ class SwapperTransactions extends BaseTransactions {
     UniV3SwapAbi,
     PublicClient<Transport, Chain>
   > {
+    if (!this._publicClient) {
+      throw new Error('No public client provided')
+    }
     return getContract({
       address: getUniV3SwapAddress(this._chainId),
       abi: uniV3SwapAbi,
-      publicClient: this._publicClient,
+      client: this._publicClient,
     })
   }
 
   protected _getSwapperContract(
     swapper: string,
   ): GetContractReturnType<SwapperAbi, PublicClient<Transport, Chain>> {
+    if (!this._publicClient) {
+      throw new Error('No public client provided')
+    }
     return getContract({
       address: getAddress(swapper),
       abi: swapperAbi,
-      publicClient: this._publicClient,
+      client: this._publicClient,
     })
   }
 }

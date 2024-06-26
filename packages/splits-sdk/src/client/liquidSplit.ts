@@ -241,10 +241,13 @@ class LiquidSplitTransactions extends BaseTransactions {
   protected _getLiquidSplitContract(
     liquidSplit: string,
   ): GetContractReturnType<LS1155Abi, PublicClient<Transport, Chain>> {
+    if (!this._publicClient) {
+      throw new Error('No public client provided')
+    }
     return getContract({
       address: getAddress(liquidSplit),
       abi: ls1155CloneAbi,
-      publicClient: this._publicClient,
+      client: this._publicClient,
     })
   }
 }

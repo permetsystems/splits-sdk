@@ -144,11 +144,14 @@ class SplitsTransactions extends BaseTransactions {
       walletClient,
       includeEnsNames,
     })
+    if (!this._publicClient) {
+      throw new Error('No public client provided')
+    }
 
     this._splitMainContract = getContract({
       address: getSplitMainAddress(chainId),
       abi: splitMainEthereumAbi,
-      publicClient: this._publicClient,
+      client: this._publicClient,
     })
 
     if (ETHEREUM_CHAIN_IDS.includes(chainId)) {

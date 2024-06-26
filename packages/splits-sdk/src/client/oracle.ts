@@ -42,10 +42,13 @@ class OracleTransactions extends BaseTransactions {
   protected _getOracleContract(
     oracle: string,
   ): GetContractReturnType<UniV3OracleAbi, PublicClient<Transport, Chain>> {
+    if (!this._publicClient) {
+      throw new Error('No public client provided')
+    }
     return getContract({
       address: getAddress(oracle),
       abi: uniV3OracleAbi,
-      publicClient: this._publicClient,
+      client: this._publicClient,
     })
   }
 }
@@ -110,7 +113,7 @@ export class OracleClient extends OracleTransactions {
 
     const quoteAmounts = multicallResponse.map((data) => {
       return data.status === 'success'
-        ? (data.result as bigint[])[0]
+        ? (data.result as unknown as bigint[])[0]
         : BigInt(0)
     })
 

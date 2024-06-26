@@ -46,7 +46,7 @@ const RECOUP_ADDRESS_SEPOLIA = '0x8Cbb4e187ce8A29BACC13Fd999a107f3c4b46D3B'
 const DIVERSIFIER_FACTORY_ADDRESS_SEPOLIA =
   '0x0eAeAfD1c82563B6005c7D09031462D9FF68Adab'
 const LIQUID_SPLIT_FACTORY_ADDRESS_SEPOLIA =
-  '0xb3Af150A5902e06373A2D3f177d85435A48c6b33'
+  '0xbc0ddbfbdcb020061c1b5511a725ad033a24841d'
 const SPLIT_MAIN_ADDRESS_SEPOLIA = '0x54E4a6014D36c381fC43b7E24A1492F556139a6F'
 
 export const getSplitMainAddress = (chainId: number): Address => {
@@ -245,7 +245,7 @@ export const CHAIN_INFO: {
   [ChainId.SEPOLIA]: {
     startBlock: 4836125,
     gqlEndpoint:
-      'https://api.thegraph.com/subgraphs/name/0xsplits/splits-subgraph-sepolia',
+      'https://api.studio.thegraph.com/query/40972/permet-liquid-split-sepolia/v0.0.4',
     nativeCurrency: {
       symbol: 'ETH',
     },
