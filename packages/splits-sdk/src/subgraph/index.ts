@@ -507,6 +507,20 @@ export const VESTING_MODULE_QUERY = gql`
   ${FULL_VESTING_MODULE_FIELDS_FRAGMENT}
 `
 
+export const LIQUID_SPLIT_HOLDER_QUERY = gql`
+  query liquidSplitHolder($holderAddress: ID!) {
+    holders(
+      where: { account_: { id: "0x485e60c486671e932fd9c53d4110cdeab1e7f0eb" } }
+    ) {
+      liquidSplit {
+        ...FullLiquidSplitFieldsFragment
+      }
+    }
+  }
+
+  ${FULL_LIQUID_SPLIT_FIELDS_FRAGMENT}
+`
+
 export const LIQUID_SPLIT_QUERY = gql`
   query liquidSplit($liquidSplitAddress: ID!) {
     liquidSplit(id: $liquidSplitAddress) {

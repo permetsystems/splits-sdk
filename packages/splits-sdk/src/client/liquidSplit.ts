@@ -37,7 +37,11 @@ import {
   UnsupportedChainIdError,
 } from '../errors'
 import { applyMixins } from './mixin'
-import { protectedFormatLiquidSplit, LIQUID_SPLIT_QUERY } from '../subgraph'
+import {
+  protectedFormatLiquidSplit,
+  LIQUID_SPLIT_QUERY,
+  LIQUID_SPLIT_HOLDER_QUERY,
+} from '../subgraph'
 import type { GqlLiquidSplit } from '../subgraph/types'
 import type {
   LiquidSplit,
@@ -62,6 +66,11 @@ import {
 } from '../utils/validation'
 
 type LS1155Abi = typeof ls1155CloneAbi
+
+type GqlLiquidSplitHolder = {
+  id: string
+  liquidSplit: GqlLiquidSplit
+}
 
 class LiquidSplitTransactions extends BaseTransactions {
   constructor({
@@ -200,6 +209,28 @@ class LiquidSplitTransactions extends BaseTransactions {
       )
 
     return await this.formatLiquidSplit(response.liquidSplit)
+  }
+
+  async getLiquidSplitsForAccount({
+    account,
+  }: {
+    account: string
+  }): Promise<LiquidSplit[]> {
+    validateAddress(account)
+
+    const response = await this._makeGqlRequest<{
+      holders: GqlLiquidSplitHolder[]
+    }>(LIQUID_SPLIT_HOLDER_QUERY, {
+      holderAddress: account.toLowerCase(),
+    })
+
+    const liquidSplits = response.holders.map((holder) => holder.liquidSplit)
+
+    return await Promise.all(
+      liquidSplits.map((gqlLiquidSplit) =>
+        this.formatLiquidSplit(gqlLiquidSplit),
+      ),
+    )
   }
 
   async formatLiquidSplit(
